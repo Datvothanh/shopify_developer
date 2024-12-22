@@ -1,0 +1,7 @@
+[environments.development]
+# theme = "173922615594"
+store = "datbt.myshopify.com"
+# password = "123"
+# ignore = [
+#   "sections/header.liquid"
+# ]

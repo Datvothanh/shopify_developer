@@ -1,0 +1,100 @@
+{{ 'announcement-bar-custom-theme.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'announcement-bar-custom-theme.js' | asset_url }}" defer="defer"></script>
+<div class="announcement">
+  {%- if section.blocks.size == 1 -%}
+    <div class="announcement-bar-custom__block">
+      <span class="announcement-bar-custom__heading">{{- section.blocks.first.settings.heading -}}</span>
+      {% if section.blocks.first.settings.link == blank %}
+        <span class="announcement-bar-custom__text">{{- section.blocks.first.settings.text -}}</span>
+      {% else %}
+        <a href="{{ section.blocks.first.settings.link }}">
+          <span class="announcement-bar-custom__text link">{{- section.blocks.first.settings.text -}}</span>
+        </a>
+      {% endif %}
+    </div>
+  {% elsif section.blocks.size > 1 and section.settings.use_compact_style %}
+    <div class="slider-container">
+      <div class="slider">
+        {% for block in section.blocks %}
+          <div class="slide" id="Slide-{{ section.id }}-{{ forloop.index }}">
+            <div class="announcement-bar-custom__block">
+              <span class="announcement-bar-custom__heading">{{- block.settings.heading -}}</span>
+              {% if block.settings.link == blank %}
+                <span class="announcement-bar-custom__text">{{- block.settings.text -}}</span>
+              {% else %}
+                <a href="{{ block.settings.link }}">
+                  <span class="announcement-bar-custom__text link">{{- block.settings.text -}}</span>
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+    </div>
+  {% else %}
+    <div class="announcement-cols">
+      {% for block in section.blocks %}
+        <div id="Slide-{{ section.id }}-{{ forloop.index }}">
+          <div class="announcement-bar-custom__block col">
+            <span class="announcement-bar-custom__heading">{{- block.settings.heading -}}</span>
+            {% if block.settings.link == blank %}
+              <span class="announcement-bar-custom__text">{{- block.settings.text -}}</span>
+            {% else %}
+              <a href="{{ block.settings.link }}">
+                <span class="announcement-bar-custom__text link">{{- block.settings.text -}}</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Announcement bar custom",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_compact_style",
+      "label": "Use compact style",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar custom"
+    }
+  ],
+  "tag": "header",
+  "class": "announcement-bar-custom",
+  "limit": 1,
+  "blocks": [
+    {
+      "name": "Announcement",
+      "type": "announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ],
+      "limit": 3
+    }
+  ]
+}
+{% endschema %}
